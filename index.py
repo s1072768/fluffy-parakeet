@@ -22,11 +22,6 @@ def index():
     homepage += "<a href=/about>簡介網頁</a><br>"
     homepage += "<br><a href=/movie>讀取開眼電影即將上映影片，寫入Firestore</a><br>"      
     return homepage
-def today():
-    homepage = "<p>現在日期時間為： {{ datetime }} </p>"
-    tz = timezone(timedelta(hours=+8))
-    now = datetime.now(tz)
-    return homepage(datetime = str(now))
 
 @app.route("/mis")
 def course():
