@@ -24,7 +24,8 @@ def index():
     homepage += "<a href=/today>顯示日期時間</a><br>"
     homepage += "<a href=/welcome?nick=tcyang>傳送使用者暱稱</a><br>"
     homepage += "<a href=/about>簡介網頁</a><br>"
-    homepage += "<br><a href=/movie>讀取開眼電影即將上映影片，寫入Firestore</a><br>"      
+    homepage += "<br><a href=/movie>讀取開眼電影即將上映影片，寫入Firestore</a><br>" 
+    homepage += "<a href =/spider>子青老師的課程名稱及網址</a><br>"     
     return homepage
 
 @app.route("/mis")
@@ -90,6 +91,18 @@ def movie():
     doc_ref.set(doc)    
   return "近期上映電影已爬蟲及存檔完畢，網站最近更新日期為：" + lastUpdate 
 
+@app.route("/spider")
+def spider():
+    url = "https://www1.pu.edu.tw/~tcyang/course.html"
+    Data = requests.get(url)
+    Data.encoding = "utf-8"
+    sp = BeautifulSoup(Data.text, "html.parser")
+    result = sp.select(".team-box")
+    info = ""
+    for x in result:
+        info += x.text + "<br>"
+        info += x.find("a").get("href") + "<br><br>"
+    return info
 
-#if __name__ == "__main__":
-    #app.run()
+if __name__ == "__main__":
+    app.run(debug=True)
