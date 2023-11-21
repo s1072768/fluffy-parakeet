@@ -4,16 +4,19 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
+    tz = timezone(timedelta(hours=+8))
+    now = datetime.now(tz)
     homepage = "<h1>Python網頁</h1>"
     homepage += "<a href=/mis>MIS</a><br>"
     homepage += "<a href=/today>顯示日期時間</a><br>"
     homepage += "<a href=/welcome?nick=tcyang>傳送使用者暱稱</a><br>"
     homepage += "<a href=/about>簡介網頁</a><br>"      
-    homepage += "<p>現在日期時間為： {{ datetime }} </p>"
+    return homepage
+def today():
+    homepage = "<p>現在日期時間為： {{ datetime }} </p>"
     tz = timezone(timedelta(hours=+8))
     now = datetime.now(tz)
-    return homepage
-
+    return homepage(datetime = str(now))
 
 @app.route("/mis")
 def course():
