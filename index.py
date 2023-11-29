@@ -25,7 +25,8 @@ def index():
     homepage += "<a href=/welcome?nick=tcyang>傳送使用者暱稱</a><br>"
     homepage += "<a href=/about>簡介網頁</a><br>"
     homepage += "<br><a href=/movie>讀取開眼電影即將上映影片，寫入Firestore</a><br>" 
-    homepage += "<a href =/spider>子青老師的課程名稱及網址</a><br>"     
+    homepage += "<a href =/spider>子青老師的課程名稱及網址</a><br>"
+    homepage += "<a href=/search_movie>查詢開眼電影即將上映影片</a><br>"
     return homepage
 
 @app.route("/mis")
