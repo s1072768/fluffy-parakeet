@@ -104,7 +104,7 @@ def spider():
         info += "<a href=" + x.find("a").get("href") + ">" + x.text + "</a><br>"
         info += x.find("a").get("href") + "<br><br>"
     return info
-@app.route("/searchQ", methods=["POST","GET"])
+@app.route("/search_movie", methods=["POST","GET"])
 def searchQ():
     if request.method == "POST":
         MovieTitle = request.form["MovieTitle"]
