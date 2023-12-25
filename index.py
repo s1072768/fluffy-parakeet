@@ -124,44 +124,47 @@ def searchQ():
 @app.route("/webhook", methods=["POST"])
 def webhook():
     req = request.get_json(force=True)
-    action =  req.get("queryResult").get("action")
-        
+    action =  req["queryResult"]["action"]       
     if(action == "category"):
-        cond = req.get("queryResult").get("action").get("category")
+        cond = req["queryResult"]["parameters"]["category"]       
         info = "這裡是關於" + cond + "的全部料理" +"\n\n"
+
+        db = firestore.client()
         collection_ref = db.collection("mcdonald")
         docs = collection_ref.get()
-        found = False
+        result = ""
         for doc in docs:
-            if cond in doc.to_dict()["category"]:
-                found = True
-                info += doc.to_dict()["name"] + "\n"
+            dict = doc.to_dict()
+            if cond in dict()["category"]:
+                result += "名稱：" +  dict()["name"] + "\n"
+                result += "價格：" +  dict()["price"]+ "\n\n"
         if not found:
-            info = "沒有這東東，你要不要看看自己在寫甚麼？"
-        result = jsonify({"fulfillmentText":info})
+            info += "沒有這東東，你要不要看看自己在寫甚麼？"
         
     elif(action == "order"):
-        cond = req.get("queryResult").get("action").get("any") 
+        meal = req["queryResult"]["parameters"]["any"]  
         info = ""
+        db = firestore.client()
         collection_ref = db.collection("mcdonald")
         docs = collection_ref.get()
         found = False
         for doc in docs:
                 if cond in doc.to_dict()["name"]:
                     found = True
-                    info += "一份" + cond + "。請問您還需要什麼來增加自己的體脂？"
+                    info += "一份" + meal + "。請問您還需要什麼來增加自己的體脂？"
         if not found:
                 info = "沒有這東東，你要不要看看自己在寫甚麼？"
-        result = jsonify({"fulfillmentText":info})
+        return make_response(jsonify({"fulfillmentText": info}))
 
     elif(action == "information"):
-        cond = req.get("queryResult").get("action").get("") 
-        info = ""
+        meal = req["queryResult"]["parameters"]["any"]
+        information =  req["queryResult"]["parameters"]["information"]
+        info = "您要查詢的是" + meal + "的" + information + "\n\n"
         collection_ref = db.collection("mcdonald")
         docs = collection_ref.get()
-        found = False
         for doc in docs:
-                if cond in doc.to_dict()["name"]:
+                dict = doc.to_dict()
+                if meal in doc.to_dict()["name"]:
                     found = True
                     info += "這些是" + cond + "的資訊。放心，我們不會放上卡洛里的。\n\n"
                     info += "類別：" + doc.to_dict["category"] + "\n"
@@ -169,7 +172,7 @@ def webhook():
                     info += "價格：" + doc.to_dict["price"] + "\n"       
         if not found:
                 info = "沒有這東東，您要不要看看自己在寫甚麼？"
-        result = jsonify({"fulfillmentText":info})
+        return make_response(jsonify({"fulfillmentText": info}))
 
 
 if __name__ == "__main__":
