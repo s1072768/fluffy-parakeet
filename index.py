@@ -128,7 +128,8 @@ def webhook():
     if(action == "CategoryChoice"):
         category = req["queryResult"]["parameters"]["category"]
         info = "您選擇的分類是："+ category + "\n"
-
+        
+        db = firestore.client()
         collection_ref = db.collection("Mcdonald")
         docs = collection_ref.get()
         result = ""
@@ -142,7 +143,7 @@ def webhook():
     elif(action == "MealChoice"):
         meal = req["queryResult"]["parameters"]["name"]
         info = "您選擇的餐點是："+ meal + "\n"
-
+        db = firestore.client()
         collection_ref = db.collection("Mcdonald")
         docs = collection_ref.get()
         result = ""
