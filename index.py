@@ -124,9 +124,9 @@ def searchQ():
 @app.route("/webhook", methods=["POST"])
 def webhook():
     req = request.get_json(force=True)
-    action =  req["queryResult"]["action"]
+    action =  req.get("queryResult").get("action")
     if(action == "CategoryChoice"):
-        category = req["queryResult"]["parameters"]["category"]
+        category = req.get("queryResult").get("parameters").get("category")
         info = "您選擇的分類是："+ category + "\n"
         
         db = firestore.client()
@@ -141,7 +141,7 @@ def webhook():
         info += result
 
     elif(action == "MealChoice"):
-        meal = req["queryResult"]["parameters"]["name"]
+        meal = req.get("queryResult").get("parameters").get("name")
         info = "您選擇的餐點是："+ meal + "\n"
         db = firestore.client()
         collection_ref = db.collection("Mcdonald")
