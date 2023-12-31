@@ -125,8 +125,8 @@ def searchQ():
 def webhook():
     req = request.get_json(force=True)
     action =  req.get("queryResult").get("action")
-    if(action == "CategoryChoice"):
-        category = req.get("queryResult").get("parameters").get("category")
+    if(action == "Order"):
+        category = req.get("queryResult").get("parameters").get("Category")
         info = "您選擇的分類是："+ category + "\n"
         
         db = firestore.client()
